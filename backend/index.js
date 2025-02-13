@@ -1,47 +1,31 @@
-import { config } from "dotenv";
-config();
 import express from "express";
 import cors from "cors";
-import mongoose from "mongoose";
+import helmet from "helmet";
+import morgan from "morgan";
+
+import { config } from "./config.js";
+import { connectDB } from "./database/database.js";
+import salesRouter from "./router/sales.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = config.PORT || 3000;
 
 app.use(express.json());
 app.use(
   cors({
-    //origin: "*",
-    origin: process.env.FRONT_URI,
+    origin: config.FRONT_URI,
   })
 );
+app.use(helmet());
+app.use(morgan("tiny"));
 
-const dbURI = process.env.MONGODB_URI;
+app.use("/sales", salesRouter);
 
-mongoose
-  .connect(dbURI, {})
+connectDB()
   .then(() => {
-    console.log("MongoDB conneted!");
+    console.log("Connected DB-Server!");
+    app.listen(port, () => {
+      console.log(`on port ${port} ${new Date()}`);
+    });
   })
-  .catch((err) => {
-    console.error("MongoDB failed", err);
-  });
-
-app.get("/api/db-check", (req, res) => {
-  if (mongoose.connection.readyState === 1) {
-    res.status(200).json({ message: "MongoDB 데이터베이스 연결 정상" });
-  } else {
-    res.status(500).json({ message: "MongoDB 데이터베이스 연결 실패" });
-  }
-});
-
-app.get("/api/backend-check", (req, res) => {
-  res.status(200).json({ message: "백엔드 연결 정상" });
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello, Express");
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+  .catch(console.error);
