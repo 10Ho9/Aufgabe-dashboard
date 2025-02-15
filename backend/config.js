@@ -14,5 +14,5 @@ export const config = {
   db: {
     host: required("MONGODB_URI"),
   },
-  frontURI: required("FRONT_URI"),
+  FRONT_URI: required("FRONT_URI"),
 };

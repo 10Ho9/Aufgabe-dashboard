@@ -1,12 +1,20 @@
-import BackendCheck from "./components/BackendCheck"; // BackendCheck 컴포넌트 임포트
+import { RouterProvider } from 'react-router-dom';
 
-function App() {
+// routing
+import router from 'routes';
+
+import ThemeCustomization from 'themes';
+
+// auth provider
+
+// ==============================|| APP ||============================== //
+
+export default function App() {
   return (
-    <div>
-      <h1>test</h1>
-      <BackendCheck />
-    </div>
+    <ThemeCustomization>
+      <>
+        <RouterProvider router={router} />
+      </>
+    </ThemeCustomization>
   );
 }
-
-export default App;
