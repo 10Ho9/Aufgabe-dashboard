@@ -16,7 +16,7 @@ import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowth
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
-export default function TotalGrowthBarChart({ isLoading, dailySales, dayTarget }) {
+export default function SalesPerformanceChart({ isLoading, dailySales, dayTarget }) {
   const theme = useTheme();
   const { mode } = useConfig();
 
@@ -93,7 +93,7 @@ export default function TotalGrowthBarChart({ isLoading, dailySales, dayTarget }
     const newChartData = {
       series: [
         {
-          name: 'Sales',
+          name: 'Verkauf',
           type: 'column',
           data: sales.map((item) => item.sales)
         }
@@ -105,16 +105,35 @@ export default function TotalGrowthBarChart({ isLoading, dailySales, dayTarget }
           labels: {
             style: { colors: primary, fontSize: '12px' },
             rotate: -45,
-            rotateAlways: true
+            rotateAlways: true,
+            formatter: function (value) {
+              const date = new Date(value);
+              const month = String(date.getMonth() + 1).padStart(2, '0');
+              const day = String(date.getDate()).padStart(2, '0');
+              const weekday = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'][date.getDay()];
+              return `${weekday} ${month}/${day} `;
+            }
           },
-          tickAmount: 10
+          tooltip: {
+            enabled: false
+          },
+          tickAmount: 'dataPoints'
         },
         yaxis: {
           title: { text: 'Verkauf', style: { color: primary } },
-          labels: { style: { colors: primary, fontSize: '12px' } }
+          labels: { style: { colors: primary, fontSize: '12px' } },
+          max: function (max) {
+            return max + 1;
+          }
         },
-
-        tooltip: { theme: mode },
+        tooltip: {
+          theme: mode,
+          style: {
+            color: '#000',
+            fontSize: '15px',
+            opacity: 1
+          }
+        },
         legend: { labels: { colors: grey500 } },
         plotOptions: {
           bar: {
@@ -135,7 +154,7 @@ export default function TotalGrowthBarChart({ isLoading, dailySales, dayTarget }
                   background: error,
                   fontSize: '12px'
                 },
-                text: 'Target',
+                text: 'Tagesziel',
                 offsetX: 10,
                 offsetY: -2
               }
@@ -212,7 +231,7 @@ export default function TotalGrowthBarChart({ isLoading, dailySales, dayTarget }
   );
 }
 
-TotalGrowthBarChart.propTypes = {
+SalesPerformanceChart.propTypes = {
   isLoading: PropTypes.bool,
   dailySales: PropTypes.arrayOf(
     PropTypes.shape({

@@ -8,7 +8,7 @@ import SalesStatusCard from './SalesStatusCard';
 import SalesTargetCard from './SalesTargetCard';
 import WelcomeCard from './WelcomeCard';
 import WeatherDateCard from './WeatherDateCard';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
+import SalesPerformanceChart from './SalesPerformanceChart';
 
 import { gridSpacing } from 'store/constant';
 
@@ -109,7 +109,7 @@ export default function Dashboard() {
       <Grid size={12}>
         <Grid container spacing={gridSpacing}>
           <Grid size={12}>
-            <TotalGrowthBarChart isLoading={isLoading} dailySales={dashboardData ? dashboardData.dailySales : []} dayTarget={dayTarget} />
+            <SalesPerformanceChart isLoading={isLoading} dailySales={dashboardData ? dashboardData.dailySales : []} dayTarget={dayTarget} />
           </Grid>
         </Grid>
       </Grid>

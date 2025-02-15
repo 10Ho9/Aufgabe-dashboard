@@ -1,49 +1,20 @@
-import PropTypes from 'prop-types';
-
 // material-ui
-import MuiAvatar from '@mui/material/Avatar';
+import { useTheme } from '@mui/material/styles';
 
-export default function Avatar({ className, color, outline, size, sx, ...others }) {
-  const colorSX = color && !outline && { color: 'background.paper', bgcolor: `${color}.main` };
-  const outlineSX = outline && {
-    color: color ? `${color}.main` : `primary.main`,
-    bgcolor: 'background.paper',
-    border: '2px solid',
-    borderColor: color ? `${color}.main` : `primary.main`
-  };
-  let sizeSX = {};
+// project imports
+import logoPng from 'assets/images/logo.png'; // PNG 파일 경로 (추가)
 
-  switch (size) {
-    case 'badge':
-      sizeSX = { width: 28, height: 28 };
-      break;
-    case 'xs':
-      sizeSX = { width: 34, height: 34 };
-      break;
-    case 'sm':
-      sizeSX = { width: 40, height: 40 };
-      break;
-    case 'lg':
-      sizeSX = { width: 72, height: 72 };
-      break;
-    case 'xl':
-      sizeSX = { width: 82, height: 82 };
-      break;
-    case 'md':
-      sizeSX = { width: 60, height: 60 };
-      break;
-    default:
-      sizeSX = {};
-  }
+// ==============================|| LOGO ||============================== //
 
-  return <MuiAvatar sx={{ ...colorSX, ...outlineSX, ...sizeSX, ...sx }} {...others} />;
+export default function Logo() {
+  const theme = useTheme();
+
+  return (
+    <img
+      src={logoPng} // PNG 파일 사용
+      alt="Your Company Logo" //  alt 텍스트 수정
+      width="92" // 필요에 따라 너비 조정
+      height="32" // 필요에 따라 높이 조정
+    />
+  );
 }
-
-Avatar.propTypes = {
-  className: PropTypes.string,
-  color: PropTypes.string,
-  outline: PropTypes.bool,
-  size: PropTypes.oneOf(['badge', 'xs', 'sm', 'md', 'lg', 'xl']),
-  sx: PropTypes.any,
-  others: PropTypes.any
-};
