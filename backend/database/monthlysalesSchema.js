@@ -52,7 +52,7 @@ const monthlySalesSchema = new Mongoose.Schema({
   dailySales: [dailySaleSchema],
 });
 
-const MonthlySales = Mongoose.model("MonthlySales", monthlySalesSchema);
+const MonthlySales = Mongoose.model("2024", monthlySalesSchema);
 
 function getDailyDataForMonth(year, month) {
   const startDateOfMonth = new Date(year, month - 1, 1);
@@ -118,4 +118,49 @@ export async function getSales(year, month) {
     console.error("Error fetching sales data from database:", error);
   }
   throw error;
+}
+
+export async function fetchAvailableMonths() {
+  try {
+    const availableMonths = await MonthlySales.aggregate([
+      {
+        $project: {
+          _id: 0,
+          yearMonth: {
+            $concat: [
+              { $toString: "$year" },
+              {
+                $cond: {
+                  if: { $lt: ["$month", 10] },
+                  then: { $concat: ["0", { $toString: "$month" }] },
+                  else: { $toString: "$month" },
+                },
+              },
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$yearMonth",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          yearMonth: "$_id",
+        },
+      },
+      {
+        $sort: { yearMonth: 1 },
+      },
+    ]);
+
+    // [{yearMonth: '202501'}, ...] -> ['202501', ...]
+    const result = availableMonths.map((item) => item.yearMonth);
+    return result;
+  } catch (error) {
+    console.error("Error fetching available months:", error);
+    throw error;
+  }
 }

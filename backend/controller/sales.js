@@ -91,3 +91,13 @@ export async function createSales(req, res) {
     res.status(500).json({ error: "Failed to create sales data" });
   }
 }
+export async function getAvailableMonths(req, res) {
+  try {
+    const availableMonths = await salesRepository.fetchAvailableMonths();
+
+    res.json(availableMonths);
+  } catch (error) {
+    console.error("Error fetching available months:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
