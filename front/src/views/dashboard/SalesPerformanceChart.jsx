@@ -11,14 +11,12 @@ import ApexCharts from 'apexcharts';
 import Chart from 'react-apexcharts';
 
 // project imports
-import useConfig from 'hooks/useConfig';
 import SkeletonTotalGrowthBarChart from 'ui-component/cards/Skeleton/TotalGrowthBarChart';
 import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
 export default function SalesPerformanceChart({ isLoading, dailySales, dayTarget }) {
   const theme = useTheme();
-  const { mode } = useConfig();
 
   const { primary } = theme.palette.text;
   const darkLight = theme.palette.dark.light;
@@ -127,8 +125,9 @@ export default function SalesPerformanceChart({ isLoading, dailySales, dayTarget
           }
         },
         tooltip: {
-          theme: mode,
+          followCursor: true,
           style: {
+            background: '#fff !important',
             color: '#000',
             fontSize: '15px',
             opacity: 1
@@ -165,7 +164,7 @@ export default function SalesPerformanceChart({ isLoading, dailySales, dayTarget
     };
 
     setChartData(newChartData);
-  }, [dailySales, dayTarget, primary200, primary, darkLight, divider, grey500, mode, error]);
+  }, [dailySales, dayTarget, primary200, primary, darkLight, divider, grey500, error]);
 
   useEffect(() => {
     if (!isLoading) {
