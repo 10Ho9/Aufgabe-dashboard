@@ -17,11 +17,11 @@ import { fetchDashboardData } from '../../api/dashboard';
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 export default function Dashboard() {
+  const today = useMemo(() => {
+    return new Date(2025, 2, 31);
+  }, []);
   const [isLoading, setLoading] = useState(true);
   const [dashboardData, setDashboardData] = useState(null);
-  const today = useMemo(() => {
-    return new Date(2025, 2, 11);
-  }, []);
 
   const yearMonth = `${today.getFullYear()}0${today.getMonth() + 1}`;
 
@@ -95,12 +95,7 @@ export default function Dashboard() {
                 <WelcomeCard />
               </Grid>
               <Grid size={{ sm: 6, xs: 12, md: 6, lg: 12 }}>
-                <WeatherDateCard
-                  date={dayData ? dayData.date : ''}
-                  weekday={dayData ? dayData.weekday : ''}
-                  weather="cloudy"
-                  temperature={'-3 / 5'}
-                />
+                <WeatherDateCard date={'2025-03-31'} weekday={dayData ? dayData.weekday : ''} weather="cloudy" temperature={'-3 / 5'} />
               </Grid>
             </Grid>
           </Grid>
@@ -109,7 +104,7 @@ export default function Dashboard() {
       <Grid size={12}>
         <Grid container spacing={gridSpacing}>
           <Grid size={12}>
-            <SalesPerformanceChart isLoading={isLoading} dailySales={dashboardData ? dashboardData.dailySales : []} dayTarget={dayTarget} />
+            <SalesPerformanceChart />
           </Grid>
         </Grid>
       </Grid>
