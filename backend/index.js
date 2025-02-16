@@ -21,6 +21,14 @@ app.use(morgan("tiny"));
 
 app.use("/sales", salesRouter);
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "Server is healthy",
+    uptime: process.uptime(),
+  });
+});
+
 connectDB()
   .then(() => {
     console.log("Connected DB-Server!");
